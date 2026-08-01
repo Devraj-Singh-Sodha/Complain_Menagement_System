@@ -16,7 +16,7 @@ public:
     void readID();
     void addComplaint();
     void viewMyComplaint();
-    void searchComplaint();
+    void menu();
 };
 void CollegeComplaint ::readID()
 {
@@ -81,7 +81,7 @@ void CollegeComplaint ::viewMyComplaint()
     if (!infile.is_open())
     {
         cout << "File not Found!" << endl;
-        return ;
+        return;
     }
     else
     {
@@ -113,10 +113,47 @@ void CollegeComplaint ::viewMyComplaint()
     }
 }
 
+void CollegeComplaint ::menu()
+{
+    int choice;
+    cout << "====================================" << endl;
+    cout << "      College Complaint System" << endl;
+    cout << "====================================" << endl;
+    cout << "1.Add Complaint" << endl
+         << "2.View Complaint" << endl
+         << "3.Back" << endl
+         << "4.Exit" << endl
+         << "Enter Your Choice : ";
+    cin>>choice;
+    cin.ignore();
+    switch (choice)
+    {
+    case 1:
+        addComplaint();
+        break;
+    case 2:
+        viewMyComplaint();
+        break;
+    case 3:
+        return;
+    case 4:
+        exit(0);
+    default:
+        cout << "Invalid Choice" << endl;
+        cout<<"Press Enter to Continue......";
+        cin.get();
+    }
+}
+
 int main()
 {
-    CollegeComplaint s1;
-    s1.viewMyComplaint();
-    // s1.addComplaint();
-    return 0;
+    CollegeComplaint student;
+
+    do
+    {
+        student.menu();
+
+    } while (true);
+
+        return 0;
 }
