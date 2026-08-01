@@ -11,17 +11,17 @@ protected:
     string details;
     string status;
     int ID = 0;
+
 public:
-
-
     void readID();
     void addComplaint();
     void viewMyComplaint();
     void searchComplaint();
 };
-void CollegeComplaint :: readID(){
-    ifstream infile("College_Complain.txt", ios::in);
-        string line;
+void CollegeComplaint ::readID()
+{
+    ifstream infile("college_complain.txt", ios::in);
+    string line;
     while (getline(infile, line))
     {
         ID = stoi(line);
@@ -31,7 +31,7 @@ void CollegeComplaint :: readID(){
             getline(infile, line);
         }
     }
-    
+
     infile.close();
     ID++;
 }
@@ -42,7 +42,7 @@ void CollegeComplaint ::addComplaint()
     cout << "Enter Your Name : ";
     getline(cin, name);
     cout << "Enter Your Roll No : ";
-    getline(cin,roll_no);
+    getline(cin, roll_no);
     cout << "Enter Complaint Title : ";
     getline(cin, title);
     cout << "Enter Complaint Details : ";
@@ -51,7 +51,7 @@ void CollegeComplaint ::addComplaint()
 
     readID();
 
-    ofstream outfile("College_Complain.txt", ios::app);
+    ofstream outfile("college_complain.txt", ios::app);
     outfile << ID << endl;
     outfile << name << endl;
     outfile << roll_no << endl;
@@ -60,4 +60,63 @@ void CollegeComplaint ::addComplaint()
     outfile << status << endl;
     outfile << "END................." << endl;
     outfile.close();
+}
+
+void CollegeComplaint ::viewMyComplaint()
+{
+    string fileID;
+    string fileName;
+    string fileRoll;
+    string fileTitle;
+    string fileDetails;
+    string fileStatus;
+    string endMarker;
+    string searchRoll;
+
+    cout << "Enter Roll Number : ";
+    getline(cin, searchRoll);
+
+    ifstream infile("college_complain.txt", ios ::in);
+    bool found = false;
+    if (!infile.is_open())
+    {
+        cout << "File not Found!" << endl;
+        return ;
+    }
+    else
+    {
+        while (getline(infile, fileID))
+        {
+            getline(infile, fileName);
+            getline(infile, fileRoll);
+            getline(infile, fileTitle);
+            getline(infile, fileDetails);
+            getline(infile, fileStatus);
+            getline(infile, endMarker);
+            if (searchRoll == fileRoll)
+            {
+                found = true;
+                cout << "Complaint ID : " << fileID << endl;
+                cout << "Name         : " << fileName << endl;
+                cout << "Roll No      : " << fileRoll << endl;
+                cout << "Title        : " << fileTitle << endl;
+                cout << "Details      : " << fileDetails << endl;
+                cout << "Status       : " << fileStatus << endl;
+                cout << "==================================" << endl;
+            }
+        }
+    }
+    infile.close();
+    if (!found)
+    {
+        cout << "Roll No not Found...." << endl;
+    }
+}
+
+int main()
+{
+    CollegeComplaint s1;
+    s1.viewMyComplaint();
+    // s1.addComplaint();
+    return 0;
 }
