@@ -20,7 +20,7 @@ public:
 };
 void CollegeComplaint ::readID()
 {
-    ifstream infile("college_complain.txt", ios::in);
+    ifstream infile("college_complaint.txt", ios::in);
     string line;
     while (getline(infile, line))
     {
@@ -51,7 +51,7 @@ void CollegeComplaint ::addComplaint()
 
     readID();
 
-    ofstream outfile("college_complain.txt", ios::app);
+    ofstream outfile("college_complaint.txt", ios::app);
     outfile << ID << endl;
     outfile << name << endl;
     outfile << roll_no << endl;
@@ -76,7 +76,7 @@ void CollegeComplaint ::viewMyComplaint()
     cout << "Enter Roll Number : ";
     getline(cin, searchRoll);
 
-    ifstream infile("college_complain.txt", ios ::in);
+    ifstream infile("college_complaint.txt", ios ::in);
     bool found = false;
     if (!infile.is_open())
     {
