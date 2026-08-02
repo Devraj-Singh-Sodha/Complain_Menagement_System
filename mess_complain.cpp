@@ -6,11 +6,19 @@ class Mess_complain{
         string complain_id;
         string student_name;
         bool status;
-        string complai;
+        string complain;
 
     public:
         int choice;
-        
+        void raise_complain(){
+            cout<<""<<endl;
+        }
+        void complaint(string id, string name, string query) {
+            complain_id = id;
+            student_name = name;
+            complain = query;
+            status = false;
+    }
         void display_menu(){
             cout << "******-Mess Complain-******" <<endl
                  << "1. Student: " << endl
@@ -22,9 +30,10 @@ class Mess_complain{
         }
 
         void student_menu(){
-            cout << "1. Raise Complain: " <<endl
-                 << "2. View Complain: " <<endl
-                 << "3. Back: " <<endl;
+            cout<< "******-Student Menu-******" <<endl
+                << "1. Raise Complain: " <<endl
+                << "2. View Complain: " <<endl
+                << "3. Back: " <<endl;
             cin >> choice;
 
         }
@@ -56,18 +65,23 @@ class Mess_complain{
                 {
                     student_menu();
                 }
+
                 else if(choice == 2){
                     mess_incharge_menu();
                 }
+
                 else if(choice == 3){
                     admin_munu();
                 }
+
                 else if(choice == 4){
                     break;
                 }
+
                 else{
                     cout<<"Please Enter Valid Choice:  "<<endl;
                 }
+
             }
             
         }
@@ -78,6 +92,6 @@ int main(){
 
     Mess_complain m1;
     m1.run();
-
+    
     return 0;
 }
