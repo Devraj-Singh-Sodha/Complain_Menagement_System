@@ -4,6 +4,9 @@ using namespace std;
 
 class CollegeComplaint
 {
+private:
+    void readID();
+    void displayComplaint();
 protected:
     string name;
     string roll_no;
@@ -13,8 +16,9 @@ protected:
     const string file_name = "college_complaint.txt";
     int ID = 0;
 
+
 public:
-    void readID();
+
     void addComplaint();
     void viewMyComplaint();
     void menu();
@@ -34,11 +38,13 @@ void CollegeComplaint ::readID()
     }
 
     infile.close();
-    ID++;
 }
+
 
 void CollegeComplaint ::addComplaint()
 {
+    readID();
+    ID++;
 
     cout << "Enter Your Name : ";
     getline(cin, name);
@@ -49,8 +55,6 @@ void CollegeComplaint ::addComplaint()
     cout << "Enter Complaint Details : ";
     getline(cin, details);
     status = "Pending";
-
-    readID();
 
     ofstream outfile(file_name, ios::app);
     outfile << ID << endl;
@@ -85,7 +89,7 @@ void CollegeComplaint ::viewMyComplaint()
         return;
     }
     else
-    {
+    {  
         while (getline(infile, fileID))
         {
             getline(infile, fileName);
@@ -126,7 +130,7 @@ void CollegeComplaint ::menu()
          << "3.Back" << endl
          << "4.Exit" << endl
          << "Enter Your Choice : ";
-    cin>>choice;
+    cin >> choice;
     cin.ignore();
     switch (choice)
     {
@@ -142,7 +146,7 @@ void CollegeComplaint ::menu()
         exit(0);
     default:
         cout << "Invalid Choice" << endl;
-        cout<<"Press Enter to Continue......";
+        cout << "Press Enter to Continue......";
         cin.get();
     }
 }
@@ -157,5 +161,5 @@ int main()
 
     } while (true);
 
-        return 0;
+    return 0;
 }
