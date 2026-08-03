@@ -151,15 +151,4 @@ void CollegeComplaint ::menu()
     }
 }
 
-int main()
-{
-    CollegeComplaint student;
 
-    do
-    {
-        student.menu();
-
-    } while (true);
-
-    return 0;
-}
