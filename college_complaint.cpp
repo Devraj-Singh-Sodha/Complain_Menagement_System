@@ -4,23 +4,28 @@ using namespace std;
 
 class CollegeComplaint
 {
+private:
+    void readID();
+    void displayComplaint();
 protected:
     string name;
     string roll_no;
     string title;
     string details;
     string status;
+    const string file_name = "college_complaint.txt";
     int ID = 0;
 
+
 public:
-    void readID();
+
     void addComplaint();
     void viewMyComplaint();
     void menu();
 };
 void CollegeComplaint ::readID()
 {
-    ifstream infile("college_complaint.txt", ios::in);
+    ifstream infile(file_name, ios::in);
     string line;
     while (getline(infile, line))
     {
@@ -33,11 +38,13 @@ void CollegeComplaint ::readID()
     }
 
     infile.close();
-    ID++;
 }
+
 
 void CollegeComplaint ::addComplaint()
 {
+    readID();
+    ID++;
 
     cout << "Enter Your Name : ";
     getline(cin, name);
@@ -49,9 +56,7 @@ void CollegeComplaint ::addComplaint()
     getline(cin, details);
     status = "Pending";
 
-    readID();
-
-    ofstream outfile("college_complaint.txt", ios::app);
+    ofstream outfile(file_name, ios::app);
     outfile << ID << endl;
     outfile << name << endl;
     outfile << roll_no << endl;
@@ -76,7 +81,7 @@ void CollegeComplaint ::viewMyComplaint()
     cout << "Enter Roll Number : ";
     getline(cin, searchRoll);
 
-    ifstream infile("college_complaint.txt", ios ::in);
+    ifstream infile(file_name, ios ::in);
     bool found = false;
     if (!infile.is_open())
     {
@@ -84,7 +89,7 @@ void CollegeComplaint ::viewMyComplaint()
         return;
     }
     else
-    {
+    {  
         while (getline(infile, fileID))
         {
             getline(infile, fileName);
@@ -96,6 +101,7 @@ void CollegeComplaint ::viewMyComplaint()
             if (searchRoll == fileRoll)
             {
                 found = true;
+                cout << "==================================" << endl;
                 cout << "Complaint ID : " << fileID << endl;
                 cout << "Name         : " << fileName << endl;
                 cout << "Roll No      : " << fileRoll << endl;
@@ -124,7 +130,7 @@ void CollegeComplaint ::menu()
          << "3.Back" << endl
          << "4.Exit" << endl
          << "Enter Your Choice : ";
-    cin>>choice;
+    cin >> choice;
     cin.ignore();
     switch (choice)
     {
@@ -140,7 +146,7 @@ void CollegeComplaint ::menu()
         exit(0);
     default:
         cout << "Invalid Choice" << endl;
-        cout<<"Press Enter to Continue......";
+        cout << "Press Enter to Continue......";
         cin.get();
     }
 }
@@ -155,5 +161,5 @@ int main()
 
     } while (true);
 
-        return 0;
+    return 0;
 }
