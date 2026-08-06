@@ -12,19 +12,21 @@ protected:
     string details;
     string status;
     string file_name;
+    string module_name;
     int ID = 0;
     struct FileData
     {
         string id, name, roll, title, details, status, endMarker;
     };
-    bool readRecord(ifstream & infile, FileData & data);
+    bool readRecord(ifstream &infile, FileData &data);
     void printRecord(FileData data);
-    void writeRecord(ofstream& outfile, FileData data);
+    void writeRecord(ofstream &outfile, FileData data);
     void readID();
 
 public:
-    BaseComplaint(string f_name)
+    BaseComplaint(string m_name, string f_name)
     {
+        module_name = m_name;
         file_name = f_name;
     }
     void addComplaint();
@@ -38,8 +40,41 @@ public:
     void run();
 };
 
-bool BaseComplaint::readRecord(ifstream& infile, FileData& data) {
-    if (getline(infile, data.id)) {
+class CollegeComplaint : public BaseComplaint
+{
+public:
+    CollegeComplaint() : BaseComplaint("College", "Complaints/college.txt") {}
+};
+
+class MessComplaint : public BaseComplaint
+{
+public:
+    MessComplaint() : BaseComplaint("Mess", "Complaints/mess.txt") {}
+};
+
+class HostelComplaint : public BaseComplaint
+{
+public:
+    HostelComplaint() : BaseComplaint("Hostel", "Complaints/hostel.txt") {}
+};
+
+bool isInvalidInput()
+{
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Invalid Input! Please enter a valid number." << endl;
+        return true;
+    }
+    cin.ignore();
+    return false;
+}
+
+bool BaseComplaint::readRecord(ifstream &infile, FileData &data)
+{
+    if (getline(infile, data.id))
+    {
         getline(infile, data.name);
         getline(infile, data.roll);
         getline(infile, data.title);
@@ -48,10 +83,11 @@ bool BaseComplaint::readRecord(ifstream& infile, FileData& data) {
         getline(infile, data.endMarker);
         return true;
     }
-    return false; 
+    return false;
 }
 
-void BaseComplaint::printRecord(FileData data) {
+void BaseComplaint::printRecord(FileData data)
+{
     cout << "==================================" << endl;
     cout << "Complaint ID : " << data.id << endl;
     cout << "Name         : " << data.name << endl;
@@ -62,7 +98,8 @@ void BaseComplaint::printRecord(FileData data) {
     cout << "==================================" << endl;
 }
 
-void BaseComplaint::writeRecord(ofstream& outfile, FileData data) {
+void BaseComplaint::writeRecord(ofstream &outfile, FileData data)
+{
     outfile << data.id << endl;
     outfile << data.name << endl;
     outfile << data.roll << endl;
@@ -71,12 +108,6 @@ void BaseComplaint::writeRecord(ofstream& outfile, FileData data) {
     outfile << data.status << endl;
     outfile << data.endMarker << endl;
 }
-
-class CollegeComplaint : public BaseComplaint
-{
-public:
-    CollegeComplaint() : BaseComplaint("Complaints/college.txt") {}
-};
 
 void BaseComplaint ::readID()
 {
@@ -99,18 +130,20 @@ void BaseComplaint ::readID()
 bool BaseComplaint ::findComplaint(string searchRoll)
 {
     ifstream infile(file_name);
-    if (!infile.is_open()) return false;
+    if (!infile.is_open())
+        return false;
 
     FileData data;
     bool found = false;
+    while (readRecord(infile, data))
     {
-        while (readRecord(infile, data)){
-            if (searchRoll == data.roll)
-            {
-                printRecord(data);
-            }
+        if (searchRoll == data.roll)
+        {
+            printRecord(data);
+            found = true;
         }
     }
+
     infile.close();
     if (!found)
     {
@@ -148,7 +181,7 @@ void BaseComplaint ::addComplaint()
 void BaseComplaint ::viewMyComplaint()
 {
     string searchRoll;
-    cout << "Enter Your Roll No";
+    cout << "Enter Your Roll No : ";
     getline(cin, searchRoll);
     findComplaint(searchRoll);
 }
@@ -200,7 +233,7 @@ void BaseComplaint::viewAllComplaint()
     FileData data;
     bool found = false;
 
-    while (readRecord(infile ,data))
+    while (readRecord(infile, data))
     {
         found = true;
 
@@ -292,7 +325,9 @@ void BaseComplaint::studentMenu()
         cout << "4. Back" << endl;
         cout << "Enter Your Choice : ";
         cin >> choice;
-        cin.ignore();
+
+        if (isInvalidInput())
+            continue;
 
         switch (choice)
         {
@@ -329,7 +364,8 @@ void BaseComplaint::adminMenu()
         cout << "3. Back" << endl;
         cout << "Enter Your Choice : ";
         cin >> choice;
-        cin.ignore();
+        if (isInvalidInput())
+            continue;
 
         switch (choice)
         {
@@ -355,14 +391,15 @@ void BaseComplaint::run()
 
     while (true)
     {
-        cout << "\n===== College Complaint System =====\n";
+        cout << "\n===== " << module_name << " Complaint System =====\n";
         cout << "1. Student\n";
         cout << "2. Admin\n";
         cout << "3. Back\n";
         cout << "4. Exit\n";
         cout << "Enter Choice : ";
         cin >> choice;
-        cin.ignore();
+        if (isInvalidInput())
+            continue;
 
         switch (choice)
         {
@@ -384,4 +421,53 @@ void BaseComplaint::run()
             cout << "Invalid Choice!" << endl;
         }
     }
+}
+int main()
+{
+    int mainChoice;
+
+    CollegeComplaint college;
+    MessComplaint mess;
+    HostelComplaint hostel;
+
+    while (true)
+    {
+        cout << "=========================================" << endl;
+        cout << "      ARYA COLLEGE COMPLAINT PORTAL      " << endl;
+        cout << "=========================================" << endl;
+        cout << "1. College Complaints" << endl;
+        cout << "2. Mess Complaints" << endl;
+        cout << "3. Hostel Complaints" << endl;
+        cout << "4. Exit System" << endl;
+        cout << "=========================================" << endl;
+        cout << "Enter your department : ";
+        cin >> mainChoice;
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Invalid Input! Please enter a valid number." << endl;
+            continue;
+        }
+
+        switch (mainChoice)
+        {
+        case 1:
+            college.run();
+            break;
+        case 2:
+            mess.run();
+            break;
+        case 3:
+            hostel.run();
+            break;
+        case 4:
+            cout << "Exiting Portal. Have a great day!" << endl;
+            return 0;
+        default:
+            cout << "Invalid Choice! Please enter a number between 1 and 4." << endl;
+        }
+    }
+
+    return 0;
 }
