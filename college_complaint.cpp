@@ -21,6 +21,7 @@ public:
 
     void addComplaint();
     void viewMyComplaint();
+    void deleteComplaint();
     void menu();
 };
 void CollegeComplaint ::readID()
@@ -119,6 +120,10 @@ void CollegeComplaint ::viewMyComplaint()
     }
 }
 
+void CollegeComplaint :: deleteComplaint()
+{
+    
+}
 void CollegeComplaint ::menu()
 {
     int choice;
