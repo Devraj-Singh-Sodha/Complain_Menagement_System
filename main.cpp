@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-
+static int id = 0; 
 class Complain_Manegement
 {
 protected:
@@ -10,10 +10,10 @@ protected:
 public:
     string complain_title;
     string complain_detail;
-    bool status = false;
-
+    void view_all_complains(string loc);
     void raise_complain();
     void view_complain();
+    void start();
 };
 
 class Mess : public Complain_Manegement
@@ -21,13 +21,40 @@ class Mess : public Complain_Manegement
 public:
     int choice;
     void saveFile();
-    void view_complain();
     void display_menu();
     void student_menu();
     void mess_incharge_menu();
     void admin_munu();
     void run();
 };
+void Complain_Manegement ::view_all_complains(string loc)
+{
+    string Address = "Complaints/" + loc + ".txt";
+    
+    ifstream file(Address);
+
+        if (!file)
+        {
+            cout << "\n[Error] No complaints found or file is missing." << endl;
+            return;
+        }
+
+        cout << "\n=== ALL REGISTERED COMPLAINTS ===" << endl;
+        string line;
+
+        while (getline(file, line))
+        {
+            if(line == student_name){
+                continue;
+            }
+            cout << line << endl;
+        }
+
+        cout << "=================================" << endl;
+
+        file.close();
+    }
+
 void Mess::student_menu()
 {
     cout << "******-Student Menu-******" << endl
@@ -53,25 +80,7 @@ void Mess::admin_munu()
     cin >> choice;
     if (choice == 1)
     {
-        ifstream file("Complaints/mess.txt");
-
-        if (!file)
-        {
-            cout << "\n[Error] No complaints found or file is missing." << endl;
-            return;
-        }
-
-        cout << "\n=== ALL REGISTERED COMPLAINTS ===" << endl;
-        string line;
-
-        while (getline(file, line))
-        {
-            cout << line << endl;
-        }
-
-        cout << "=================================" << endl;
-
-        file.close();
+        view_all_complains("mess");
     }
 }
 void Mess::run()
@@ -113,6 +122,11 @@ void Mess::mess_incharge_menu()
          << "3. Search complain: " << endl
          << "4. Logout: " << endl;
     cin >> choice;
+
+    if (choice == 1)
+    {
+       view_all_complains("mess");
+    }
 }
 void Mess::display_menu()
 {
@@ -128,21 +142,14 @@ void Mess::saveFile()
     raise_complain();
 
     ofstream file("Complaints/mess.txt", ios::app);
-
+    file << id << endl;
     file << student_name << endl;
     file << roll_no << endl;
     file << complain_title << endl;
     file << complain_detail << endl;
-    file << status << endl;
     file << "-----------------" << endl;
 
     file.close();
-}
-void Mess::view_complain()
-{
-    cout << "Complain Title: " << complain_title << endl;
-    cout << "Complain in detail: " << complain_detail << endl;
-    cout << "Status: " << (status ? "Resolved" : "Pending") << endl;
 }
 void Complain_Manegement ::raise_complain()
 {
@@ -161,18 +168,64 @@ void Complain_Manegement ::raise_complain()
 
     cout << "Your Complain is register: " << endl
          << "We are working on it" << endl;
+    id++;
+    cout << "Your Complain Id is " << id << endl;
 }
 void Complain_Manegement ::view_complain()
 {
-    cout << "Student : " << student_name << endl;
-    cout << "Roll No : " << roll_no << endl;
-    cout << "Title : " << complain_title << endl;
-    cout << "Detail : " << complain_detail << endl;
+    if (id == 0){
+        cout << "No complaints found." << endl;
+        return;
+    }
+    else{
+        cout << "Complain Id : " << id << endl;
+        cout << "Student : " << student_name << endl;
+        cout << "Roll No : " << roll_no << endl;
+        cout << "Title : " << complain_title << endl;
+        cout << "Detail : " << complain_detail << endl;
+
+    }
 }
+
 
 int main()
 {
-    Mess m1;
-    m1.run();
+    vector<Mess> mess(1);   // One Mess object stored dynamically
+
+    while (true)
+    {
+        int choice;
+
+        cout << "\n-------- Welcome Arya College Complaint System --------" << endl;
+        cout << "1. For Mess Complaint" << endl;
+        cout << "2. For College Complaint" << endl;
+        cout << "3. For Hostel Complaint" << endl;
+        cout << "4. Exit" << endl;
+        cout << "Enter Your Choice: ";
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            mess[0].run();
+            break;
+
+        case 2:
+            cout << "\nCollege Complaint Module is under development.\n";
+            break;
+
+        case 3:
+            cout << "\nHostel Complaint Module is under development.\n";
+            break;
+
+        case 4:
+            cout << "\nThank You for using Arya College Complaint System.\n";
+            return 0;
+
+        default:
+            cout << "\nInvalid Choice! Please Try Again.\n";
+        }
+    }
+
     return 0;
 }
