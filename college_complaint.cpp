@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+
 using namespace std;
 
 class CollegeComplaint
@@ -7,6 +8,7 @@ class CollegeComplaint
 private:
     void readID();
     void displayComplaint();
+
 protected:
     string name;
     string roll_no;
@@ -16,9 +18,7 @@ protected:
     const string file_name = "college_complaint.txt";
     int ID = 0;
 
-
 public:
-
     void addComplaint();
     void viewMyComplaint();
     void menu();
@@ -40,7 +40,6 @@ void CollegeComplaint ::readID()
     infile.close();
 }
 
-
 void CollegeComplaint ::addComplaint()
 {
     readID();
@@ -57,7 +56,6 @@ void CollegeComplaint ::addComplaint()
     status = "Pending";
 
     ofstream outfile(file_name, ios::app);
-    outfile << ID << endl;
     outfile << name << endl;
     outfile << roll_no << endl;
     outfile << title << endl;
@@ -80,7 +78,6 @@ void CollegeComplaint ::viewMyComplaint()
 
     cout << "Enter Roll Number : ";
     getline(cin, searchRoll);
-
     ifstream infile(file_name, ios ::in);
     bool found = false;
     if (!infile.is_open())
@@ -89,7 +86,7 @@ void CollegeComplaint ::viewMyComplaint()
         return;
     }
     else
-    {  
+    {
         while (getline(infile, fileID))
         {
             getline(infile, fileName);
@@ -118,7 +115,6 @@ void CollegeComplaint ::viewMyComplaint()
         cout << "Roll No not Found...." << endl;
     }
 }
-
 void CollegeComplaint ::menu()
 {
     int choice;
