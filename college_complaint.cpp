@@ -1,10 +1,21 @@
 #include <iostream>
 #include <fstream>
+<<<<<<< HEAD
+
+=======
 #include <cstdio>
+>>>>>>> d15dfe384a2a94caf40cc502c6ab21fbbdf594c4
 using namespace std;
 
 class BaseComplaint
 {
+<<<<<<< HEAD
+private:
+    void readID();
+    void displayComplaint();
+
+=======
+>>>>>>> d15dfe384a2a94caf40cc502c6ab21fbbdf594c4
 protected:
     string name;
     string roll_no;
@@ -14,6 +25,10 @@ protected:
     string file_name;
     string module_name;
     int ID = 0;
+<<<<<<< HEAD
+
+public:
+=======
     struct FileData
     {
         string id, name, roll, title, details, status, endMarker;
@@ -29,6 +44,7 @@ public:
         module_name = m_name;
         file_name = f_name;
     }
+>>>>>>> d15dfe384a2a94caf40cc502c6ab21fbbdf594c4
     void addComplaint();
     void viewMyComplaint();
     void deleteComplaint();
@@ -127,6 +143,9 @@ void BaseComplaint ::readID()
     infile.close();
 }
 
+<<<<<<< HEAD
+void CollegeComplaint ::addComplaint()
+=======
 bool BaseComplaint ::findComplaint(string searchRoll)
 {
     ifstream infile(file_name);
@@ -153,6 +172,7 @@ bool BaseComplaint ::findComplaint(string searchRoll)
 }
 
 void BaseComplaint ::addComplaint()
+>>>>>>> d15dfe384a2a94caf40cc502c6ab21fbbdf594c4
 {
     readID();
     ID++;
@@ -168,7 +188,6 @@ void BaseComplaint ::addComplaint()
     status = "Pending";
 
     ofstream outfile(file_name, ios::app);
-    outfile << ID << endl;
     outfile << name << endl;
     outfile << roll_no << endl;
     outfile << title << endl;
@@ -183,10 +202,51 @@ void BaseComplaint ::viewMyComplaint()
     string searchRoll;
     cout << "Enter Your Roll No : ";
     getline(cin, searchRoll);
+<<<<<<< HEAD
+    ifstream infile(file_name, ios ::in);
+    bool found = false;
+    if (!infile.is_open())
+    {
+        cout << "File not Found!" << endl;
+        return;
+    }
+    else
+    {
+        while (getline(infile, fileID))
+        {
+            getline(infile, fileName);
+            getline(infile, fileRoll);
+            getline(infile, fileTitle);
+            getline(infile, fileDetails);
+            getline(infile, fileStatus);
+            getline(infile, endMarker);
+            if (searchRoll == fileRoll)
+            {
+                found = true;
+                cout << "==================================" << endl;
+                cout << "Complaint ID : " << fileID << endl;
+                cout << "Name         : " << fileName << endl;
+                cout << "Roll No      : " << fileRoll << endl;
+                cout << "Title        : " << fileTitle << endl;
+                cout << "Details      : " << fileDetails << endl;
+                cout << "Status       : " << fileStatus << endl;
+                cout << "==================================" << endl;
+            }
+        }
+    }
+    infile.close();
+    if (!found)
+    {
+        cout << "Roll No not Found...." << endl;
+    }
+}
+void CollegeComplaint ::menu()
+=======
     findComplaint(searchRoll);
 }
 
 void BaseComplaint ::deleteComplaint()
+>>>>>>> d15dfe384a2a94caf40cc502c6ab21fbbdf594c4
 {
     string searchRoll;
     cout << "Enter Your Roll NO : ";
