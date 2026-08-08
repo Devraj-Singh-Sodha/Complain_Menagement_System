@@ -1,46 +1,178 @@
 #include <iostream>
 #include <fstream>
+<<<<<<< HEAD
 
+=======
+#include <cstdio>
+>>>>>>> d15dfe384a2a94caf40cc502c6ab21fbbdf594c4
 using namespace std;
 
-class CollegeComplaint
+class BaseComplaint
 {
+<<<<<<< HEAD
 private:
     void readID();
     void displayComplaint();
 
+=======
+>>>>>>> d15dfe384a2a94caf40cc502c6ab21fbbdf594c4
 protected:
     string name;
     string roll_no;
     string title;
     string details;
     string status;
-    const string file_name = "college_complaint.txt";
+    string file_name;
+    string module_name;
     int ID = 0;
+<<<<<<< HEAD
 
 public:
+=======
+    struct FileData
+    {
+        string id, name, roll, title, details, status, endMarker;
+    };
+    bool readRecord(ifstream &infile, FileData &data);
+    void printRecord(FileData data);
+    void writeRecord(ofstream &outfile, FileData data);
+    void readID();
+
+public:
+    BaseComplaint(string m_name, string f_name)
+    {
+        module_name = m_name;
+        file_name = f_name;
+    }
+>>>>>>> d15dfe384a2a94caf40cc502c6ab21fbbdf594c4
     void addComplaint();
     void viewMyComplaint();
-    void menu();
+    void deleteComplaint();
+    bool findComplaint(string searchRoll);
+    void updateComplaintStatus();
+    void viewAllComplaint();
+    void studentMenu();
+    void adminMenu();
+    void run();
 };
-void CollegeComplaint ::readID()
+
+class CollegeComplaint : public BaseComplaint
+{
+public:
+    CollegeComplaint() : BaseComplaint("College", "Complaints/college.txt") {}
+};
+
+class MessComplaint : public BaseComplaint
+{
+public:
+    MessComplaint() : BaseComplaint("Mess", "Complaints/mess.txt") {}
+};
+
+class HostelComplaint : public BaseComplaint
+{
+public:
+    HostelComplaint() : BaseComplaint("Hostel", "Complaints/hostel.txt") {}
+};
+
+bool isInvalidInput()
+{
+    if (cin.fail())
+    {
+        cin.clear();
+        cin.ignore(10000, '\n');
+        cout << "Invalid Input! Please enter a valid number." << endl;
+        return true;
+    }
+    cin.ignore();
+    return false;
+}
+
+bool BaseComplaint::readRecord(ifstream &infile, FileData &data)
+{
+    if (getline(infile, data.id))
+    {
+        getline(infile, data.name);
+        getline(infile, data.roll);
+        getline(infile, data.title);
+        getline(infile, data.details);
+        getline(infile, data.status);
+        getline(infile, data.endMarker);
+        return true;
+    }
+    return false;
+}
+
+void BaseComplaint::printRecord(FileData data)
+{
+    cout << "==================================" << endl;
+    cout << "Complaint ID : " << data.id << endl;
+    cout << "Name         : " << data.name << endl;
+    cout << "Roll No      : " << data.roll << endl;
+    cout << "Title        : " << data.title << endl;
+    cout << "Details      : " << data.details << endl;
+    cout << "Status       : " << data.status << endl;
+    cout << "==================================" << endl;
+}
+
+void BaseComplaint::writeRecord(ofstream &outfile, FileData data)
+{
+    outfile << data.id << endl;
+    outfile << data.name << endl;
+    outfile << data.roll << endl;
+    outfile << data.title << endl;
+    outfile << data.details << endl;
+    outfile << data.status << endl;
+    outfile << data.endMarker << endl;
+}
+
+void BaseComplaint ::readID()
 {
     ifstream infile(file_name, ios::in);
     string line;
     while (getline(infile, line))
     {
+        if (line.empty())
+            continue;
+
         ID = stoi(line);
 
         for (int i = 0; i < 6; i++)
-        {
             getline(infile, line);
-        }
     }
 
     infile.close();
 }
 
+<<<<<<< HEAD
 void CollegeComplaint ::addComplaint()
+=======
+bool BaseComplaint ::findComplaint(string searchRoll)
+{
+    ifstream infile(file_name);
+    if (!infile.is_open())
+        return false;
+
+    FileData data;
+    bool found = false;
+    while (readRecord(infile, data))
+    {
+        if (searchRoll == data.roll)
+        {
+            printRecord(data);
+            found = true;
+        }
+    }
+
+    infile.close();
+    if (!found)
+    {
+        cout << "Roll No not Found...." << endl;
+    }
+    return found;
+}
+
+void BaseComplaint ::addComplaint()
+>>>>>>> d15dfe384a2a94caf40cc502c6ab21fbbdf594c4
 {
     readID();
     ID++;
@@ -61,23 +193,16 @@ void CollegeComplaint ::addComplaint()
     outfile << title << endl;
     outfile << details << endl;
     outfile << status << endl;
-    outfile << "END................." << endl;
+    outfile << "_____________________" << endl;
     outfile.close();
 }
 
-void CollegeComplaint ::viewMyComplaint()
+void BaseComplaint ::viewMyComplaint()
 {
-    string fileID;
-    string fileName;
-    string fileRoll;
-    string fileTitle;
-    string fileDetails;
-    string fileStatus;
-    string endMarker;
     string searchRoll;
-
-    cout << "Enter Roll Number : ";
+    cout << "Enter Your Roll No : ";
     getline(cin, searchRoll);
+<<<<<<< HEAD
     ifstream infile(file_name, ios ::in);
     bool found = false;
     if (!infile.is_open())
@@ -116,46 +241,293 @@ void CollegeComplaint ::viewMyComplaint()
     }
 }
 void CollegeComplaint ::menu()
+=======
+    findComplaint(searchRoll);
+}
+
+void BaseComplaint ::deleteComplaint()
+>>>>>>> d15dfe384a2a94caf40cc502c6ab21fbbdf594c4
 {
+    string searchRoll;
+    cout << "Enter Your Roll NO : ";
+    getline(cin, searchRoll);
+    if (findComplaint(searchRoll))
+    {
+        int deleteID;
+        cout << "Enter Your ID : ";
+        cin >> deleteID;
+        cin.ignore();
+
+        ifstream infile(file_name);
+        ofstream outfile("temp.txt");
+        FileData data;
+        bool deleted = false;
+        while (readRecord(infile, data))
+        {
+            if (deleteID == stoi(data.id) && searchRoll == data.roll)
+            {
+                deleted = true;
+                continue;
+            }
+            writeRecord(outfile, data);
+        }
+        infile.close();
+        outfile.close();
+        remove(file_name.c_str());
+        rename("temp.txt", file_name.c_str());
+        if (deleted)
+            cout << "Complaint Deleted Successfully." << endl;
+        else
+            cout << "Complaint ID Not Found." << endl;
+    }
+}
+void BaseComplaint::viewAllComplaint()
+{
+    ifstream infile(file_name);
+
+    if (!infile.is_open())
+    {
+        cout << "File Not Found!" << endl;
+        return;
+    }
+    FileData data;
+    bool found = false;
+
+    while (readRecord(infile, data))
+    {
+        found = true;
+
+        printRecord(data);
+    }
+
+    infile.close();
+
+    if (!found)
+    {
+        cout << "No Complaint Found." << endl;
+    }
+}
+void BaseComplaint::updateComplaintStatus()
+{
+    viewAllComplaint();
+
+    int updateID;
+    cout << "Enter Complaint ID : ";
+    cin >> updateID;
+    cin.ignore();
+
     int choice;
-    cout << "====================================" << endl;
-    cout << "      College Complaint System" << endl;
-    cout << "====================================" << endl;
-    cout << "1.Add Complaint" << endl
-         << "2.View Complaint" << endl
-         << "3.Back" << endl
-         << "4.Exit" << endl
-         << "Enter Your Choice : ";
+    cout << "\nSelect New Status\n";
+    cout << "1. Pending\n";
+    cout << "2. In Progress\n";
+    cout << "3. Resolved\n";
+    cout << "Enter Choice : ";
     cin >> choice;
     cin.ignore();
+
+    string newStatus;
+
     switch (choice)
     {
     case 1:
-        addComplaint();
+        newStatus = "Pending";
         break;
     case 2:
-        viewMyComplaint();
+        newStatus = "In Progress";
         break;
     case 3:
-        return;
-    case 4:
-        exit(0);
+        newStatus = "Resolved";
+        break;
     default:
-        cout << "Invalid Choice" << endl;
-        cout << "Press Enter to Continue......";
+        cout << "Invalid Choice!" << endl;
+        return;
+    }
+
+    ifstream infile(file_name);
+    ofstream outfile("temp.txt");
+    FileData data;
+    bool updated = false;
+
+    while (readRecord(infile, data))
+    {
+        if (updateID == stoi(data.id))
+        {
+            data.status = newStatus;
+            updated = true;
+        }
+        writeRecord(outfile, data);
+    }
+
+    infile.close();
+    outfile.close();
+
+    remove(file_name.c_str());
+    rename("temp.txt", file_name.c_str());
+
+    if (updated)
+        cout << "Complaint Status Updated Successfully." << endl;
+    else
+        cout << "Complaint ID Not Found." << endl;
+}
+
+void BaseComplaint::studentMenu()
+{
+    int choice;
+
+    while (true)
+    {
+        cout << "\n====================================" << endl;
+        cout << "     Student Complaint Menu" << endl;
+        cout << "====================================" << endl;
+        cout << "1. Add Complaint" << endl;
+        cout << "2. View My Complaint" << endl;
+        cout << "3. Delete Complaint" << endl;
+        cout << "4. Back" << endl;
+        cout << "Enter Your Choice : ";
+        cin >> choice;
+
+        if (isInvalidInput())
+            continue;
+
+        switch (choice)
+        {
+        case 1:
+            addComplaint();
+            break;
+        case 2:
+            viewMyComplaint();
+            break;
+        case 3:
+            deleteComplaint();
+            break;
+        case 4:
+            return;
+        default:
+            cout << "Invalid Choice!" << endl;
+        }
+        cout << "\nPress Enter to Continue...";
         cin.get();
     }
 }
 
+void BaseComplaint::adminMenu()
+{
+    int choice;
+
+    while (true)
+    {
+        cout << "\n====================================" << endl;
+        cout << "         Admin Menu" << endl;
+        cout << "====================================" << endl;
+        cout << "1. View All Complaints" << endl;
+        cout << "2. Update Complaint Status" << endl;
+        cout << "3. Back" << endl;
+        cout << "Enter Your Choice : ";
+        cin >> choice;
+        if (isInvalidInput())
+            continue;
+
+        switch (choice)
+        {
+        case 1:
+            viewAllComplaint();
+            break;
+        case 2:
+            updateComplaintStatus();
+            break;
+        case 3:
+            return;
+        default:
+            cout << "Invalid Choice!" << endl;
+        }
+        cout << "\nPress Enter to Continue...";
+        cin.get();
+    }
+}
+
+void BaseComplaint::run()
+{
+    int choice;
+
+    while (true)
+    {
+        cout << "\n===== " << module_name << " Complaint System =====\n";
+        cout << "1. Student\n";
+        cout << "2. Admin\n";
+        cout << "3. Back\n";
+        cout << "4. Exit\n";
+        cout << "Enter Choice : ";
+        cin >> choice;
+        if (isInvalidInput())
+            continue;
+
+        switch (choice)
+        {
+        case 1:
+            studentMenu();
+            break;
+
+        case 2:
+            adminMenu();
+            break;
+
+        case 3:
+            return;
+
+        case 4:
+            exit(0);
+
+        default:
+            cout << "Invalid Choice!" << endl;
+        }
+    }
+}
 int main()
 {
-    CollegeComplaint student;
+    int mainChoice;
 
-    do
+    CollegeComplaint college;
+    MessComplaint mess;
+    HostelComplaint hostel;
+
+    while (true)
     {
-        student.menu();
+        cout << "=========================================" << endl;
+        cout << "      ARYA COLLEGE COMPLAINT PORTAL      " << endl;
+        cout << "=========================================" << endl;
+        cout << "1. College Complaints" << endl;
+        cout << "2. Mess Complaints" << endl;
+        cout << "3. Hostel Complaints" << endl;
+        cout << "4. Exit System" << endl;
+        cout << "=========================================" << endl;
+        cout << "Enter your department : ";
+        cin >> mainChoice;
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(10000, '\n');
+            cout << "Invalid Input! Please enter a valid number." << endl;
+            continue;
+        }
 
-    } while (true);
+        switch (mainChoice)
+        {
+        case 1:
+            college.run();
+            break;
+        case 2:
+            mess.run();
+            break;
+        case 3:
+            hostel.run();
+            break;
+        case 4:
+            cout << "Exiting Portal. Have a great day!" << endl;
+            return 0;
+        default:
+            cout << "Invalid Choice! Please enter a number between 1 and 4." << endl;
+        }
+    }
 
     return 0;
 }
