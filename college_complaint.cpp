@@ -40,11 +40,11 @@ public:
     void run();
 };
 
-class CollegeComplaint : public BaseComplaint
-{
-public:
-    CollegeComplaint() : BaseComplaint("College", "Complaints/college.txt") {}
-};
+// class CollegeComplaint : public BaseComplaint
+// {
+// public:
+//     CollegeComplaint() : BaseComplaint("College", "Complaints/college.txt") {}
+// };
 
 class MessComplaint : public BaseComplaint
 {
@@ -168,7 +168,6 @@ void BaseComplaint ::addComplaint()
     status = "Pending";
 
     ofstream outfile(file_name, ios::app);
-    outfile << ID << endl;
     outfile << name << endl;
     outfile << roll_no << endl;
     outfile << title << endl;
@@ -385,48 +384,48 @@ void BaseComplaint::adminMenu()
     }
 }
 
-void BaseComplaint::run()
-{
-    int choice;
+// void BaseComplaint::run()
+// {
+//     int choice;
 
-    while (true)
-    {
-        cout << "\n===== " << module_name << " Complaint System =====\n";
-        cout << "1. Student\n";
-        cout << "2. Admin\n";
-        cout << "3. Back\n";
-        cout << "4. Exit\n";
-        cout << "Enter Choice : ";
-        cin >> choice;
-        if (isInvalidInput())
-            continue;
+//     while (true)
+//     {
+//         cout << "\n===== " << module_name << " Complaint System =====\n";
+//         cout << "1. Student\n";
+//         cout << "2. Admin\n";
+//         cout << "3. Back\n";
+//         cout << "4. Exit\n";
+//         cout << "Enter Choice : ";
+//         cin >> choice;
+//         if (isInvalidInput())
+//             continue;
 
-        switch (choice)
-        {
-        case 1:
-            studentMenu();
-            break;
+//         switch (choice)
+//         {
+//         case 1:
+//             studentMenu();
+//             break;
 
-        case 2:
-            adminMenu();
-            break;
+//         case 2:
+//             adminMenu();
+//             break;
 
-        case 3:
-            return;
+//         case 3:
+//             return;
 
-        case 4:
-            exit(0);
+//         case 4:
+//             exit(0);
 
-        default:
-            cout << "Invalid Choice!" << endl;
-        }
-    }
-}
+//         default:
+//             cout << "Invalid Choice!" << endl;
+//         }
+//     }
+// }
 int main()
 {
     int mainChoice;
 
-    CollegeComplaint college;
+   // CollegeComplaint college;
     MessComplaint mess;
     HostelComplaint hostel;
 
@@ -450,18 +449,19 @@ int main()
             continue;
         }
 
-        switch (mainChoice)
+         switch (mainChoice)
+        // {
+        // case 1:
+        //     college.run();
+        //     break;
         {
         case 1:
-            college.run();
-            break;
-        case 2:
             mess.run();
             break;
-        case 3:
+        case 2:
             hostel.run();
             break;
-        case 4:
+        case 3:
             cout << "Exiting Portal. Have a great day!" << endl;
             return 0;
         default:
