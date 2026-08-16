@@ -99,8 +99,8 @@ void College_complaint ::raise_complain(string location)
     getline(cin, student_name);
 
     cout << "Enter Your Roll_number: ";
-    cin >> roll_no;
-    cin.ignore();
+    getline(cin,roll_no);
+    
 
     cout << "Enter your Complain Title: ";
     getline(cin, complain_title);
@@ -206,7 +206,7 @@ void Student ::college_menu()
         cout << "3. Back" << endl;
         cout << "Enter Your Choice : ";
         cin >> choice;
-
+        cin.ignore();
         if (choice == 1)
         {
             raise_complain("college");
@@ -236,7 +236,7 @@ void Student ::run()
         cout << "3. For college Complaint" << endl;
         cout << "4. Exit" << endl;
         cin >> choice;
-
+        cin.ignore();
         if (choice == 1)
         {
             mess_menu();
@@ -277,7 +277,7 @@ void Admin ::run()
                  << "3. View College Complains: " << endl
                  << "4. Logout: " << endl;
             cin >> choice;
-
+            cin.ignore();
             if (choice == 1)
             {
                 specific_complain("mess");
@@ -320,7 +320,7 @@ void Warden ::run()
                  << "2. View Hostel Complains: " << endl
                  << "3. Logout: " << endl;
             cin >> choice;
-
+            cin.ignore();
             if (choice == 1)
             {
                 specific_complain("mess");
@@ -362,7 +362,7 @@ int main()
         cout << "4. Exit" << endl;
         cout << "Enter Your Choice: ";
         cin >> choice;
-
+        cin.ignore();
         if (choice == 1)
         {
             s1.run();
