@@ -6,6 +6,8 @@ class College_complaint
 protected:
     string student_name;
     string roll_no;
+    string admin_pass = "1234";
+    string warden_pass = "1234";
 
 public:
     string complain_title;
@@ -13,6 +15,7 @@ public:
     void raise_complain(string location);
     void view_complain();
     void specific_complain(string location);
+    int verification(string power);
 };
 class Student : public College_complaint
 {
@@ -33,7 +36,40 @@ public:
     void run();
 };
 
-void College_complaint :: specific_complain(string location)
+inline int College_complaint ::verification(string power)
+{
+    string pass;
+    cout << "Enter The Passwowrd: ";
+    cin >> pass;
+
+    if (power == "admin")
+    {
+        if (pass == admin_pass)
+        {
+            cout << "Welcome: " << endl;
+            return 1;
+        }
+        else
+        {
+            cout << "password is incorrect: " << endl;
+            return 0;
+        }
+    }
+    else if (power == "warden")
+    {
+        if (pass == warden_pass)
+        {
+            cout << "Welcome: " << endl;
+            return 1;
+        }
+        else
+        {
+            cout << "password is incorrect: " << endl;
+            return 0;
+        }
+    }
+}
+void College_complaint ::specific_complain(string location)
 {
     string Address = "Complaints/" + location + ".txt";
 
@@ -57,7 +93,7 @@ void College_complaint :: specific_complain(string location)
 
     file.close();
 }
-void College_complaint :: raise_complain(string location)
+void College_complaint ::raise_complain(string location)
 {
     cout << "Enter Your Name: ";
     getline(cin, student_name);
@@ -84,7 +120,7 @@ void College_complaint :: raise_complain(string location)
 
     file.close();
 }
-inline void College_complaint :: view_complain()
+inline void College_complaint ::view_complain()
 {
 
     cout << "Student : " << student_name << endl;
@@ -139,6 +175,7 @@ void Student::mess_menu()
              << "2. View Complain: " << endl
              << "3. Back: " << endl;
         cin >> choice;
+        cin.ignore();
 
         if (choice == 1)
         {
@@ -186,9 +223,6 @@ void Student ::college_menu()
         {
             cout << "Enter A Valid choice: " << endl;
         }
-        
-        
-        
     }
 }
 void Student ::run()
@@ -215,7 +249,7 @@ void Student ::run()
         {
             college_menu();
         }
-        
+
         else if (choice == 4)
         {
             break;
@@ -229,71 +263,86 @@ void Student ::run()
 
 void Admin ::run()
 {
-    while (true)
+
+    if (verification("admin"))
     {
-        int choice;
-        cout << endl;
-        cout << "******-Admin Menu-******" << endl;
-        cout << "1. View Mess Complains: " << endl
-             << "2. View Hostel Complains: " << endl
-             << "3. View College Complains: " << endl
-             << "4. Logout: " << endl;
-        cin >> choice;
 
-        if (choice == 1)
+        while (true)
         {
-            specific_complain("mess");
-        }
-        else if (choice == 2)
-        {
-            specific_complain("hostel");
-        }
-        else if (choice == 3)
-        {
-            specific_complain("college");
-        }
-        else if (choice == 4)
-        {
-            break;
-        }
+            int choice;
+            cout << endl;
+            cout << "******-Admin Portal-******" << endl;
+            cout << "1. View Mess Complains: " << endl
+                 << "2. View Hostel Complains: " << endl
+                 << "3. View College Complains: " << endl
+                 << "4. Logout: " << endl;
+            cin >> choice;
 
-        else
-        {
-            cout << "Please Enter Valid choice: ";
+            if (choice == 1)
+            {
+                specific_complain("mess");
+            }
+            else if (choice == 2)
+            {
+                specific_complain("hostel");
+            }
+            else if (choice == 3)
+            {
+                specific_complain("college");
+            }
+            else if (choice == 4)
+            {
+                break;
+            }
+
+            else
+            {
+                cout << "Please Enter Valid choice: ";
+            }
         }
     }
+    else
+    {
+        cout << "sorry" << endl;
+    }
 }
-
 void Warden ::run()
 {
-    while (true)
+    if (verification("warden"))
     {
+        while (true)
+        {
 
-        int choice;
-        cout << endl;
-        cout << "******-Warden Menu-******" << endl;
-        cout << "1. View Mess Complains: " << endl
-             << "2. View Hostel Complains: " << endl
-             << "3. Logout: " << endl;
-        cin >> choice;
+            int choice;
+            cout << endl;
+            cout << "******-Warden Portal-******" << endl;
+            cout << "1. View Mess Complains: " << endl
+                 << "2. View Hostel Complains: " << endl
+                 << "3. Logout: " << endl;
+            cin >> choice;
 
-        if (choice == 1)
-        {
-            specific_complain("mess");
-        }
-        else if (choice == 2)
-        {
-            specific_complain("hostel");
-        }
-        else if (choice == 3)
-        {
-            break;
-        }
+            if (choice == 1)
+            {
+                specific_complain("mess");
+            }
+            else if (choice == 2)
+            {
+                specific_complain("hostel");
+            }
+            else if (choice == 3)
+            {
+                break;
+            }
 
-        else
-        {
-            cout << "Please Enter Valid choice: ";
+            else
+            {
+                cout << "Please Enter Valid choice: ";
+            }
         }
+    }
+    else
+    {
+        cout << "sorry" << endl;
     }
 }
 
@@ -328,6 +377,8 @@ int main()
         }
         else if (choice == 4)
         {
+            cout << "Thank You: " << endl
+                 << "Exiting...." << endl;
             break;
         }
         else
