@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include<fstream>
 using namespace std;
 
 class College_complaint
@@ -68,6 +69,7 @@ inline int College_complaint ::verification(string power)
             return 0;
         }
     }
+    return 0;
 }
 void College_complaint ::specific_complain(string location)
 {
@@ -83,12 +85,24 @@ void College_complaint ::specific_complain(string location)
 
     cout << "\n=== ALL REGISTERED " << location << " COMPLAINTS ===" << endl;
     string line;
-
-    while (getline(file, line))
-    {
-        cout << line << endl;
+    string name, roll, title, detail,separator;
+    bool isEmpty = true;
+    while (getline(file, name) &&
+       getline(file, roll) &&
+       getline(file, title) &&
+       getline(file, detail) &&
+       getline(file, separator)){
+        isEmpty = false;
+        cout << "Student Name : " << name << endl;
+        cout << "Roll No      : " << roll << endl;
+        cout << "Title        : " << title << endl;
+        cout << "Detail       : " << detail << endl;
+        cout << separator << endl;
     }
-
+    if (isEmpty)
+    {
+        cout << "No Complaints registered yet." << endl;
+    }
     cout << "=================================" << endl;
 
     file.close();
@@ -100,7 +114,7 @@ void College_complaint ::raise_complain(string location)
 
     cout << "Enter Your Roll_number: ";
     getline(cin,roll_no);
-    
+
 
     cout << "Enter your Complain Title: ";
     getline(cin, complain_title);
@@ -122,7 +136,11 @@ void College_complaint ::raise_complain(string location)
 }
 inline void College_complaint ::view_complain()
 {
-
+    if (student_name == "" || roll_no == "")
+    {
+        cout << "\nNo complaint raised in the current session yet!" << endl;
+        return;
+    }
     cout << "Student : " << student_name << endl;
     cout << "Roll No : " << roll_no << endl;
     cout << "Title : " << complain_title << endl;
@@ -136,8 +154,8 @@ void Student ::hostel_menu()
     {
 
         cout << "******-Student Hostel Menu-******" << endl;
-        cout << "1.Add compalint" << endl
-             << "2.view complaint" << endl
+        cout << "1.Add Complaint" << endl
+             << "2.view Complaint" << endl
              << "3.exit" << endl
              << "enter your choice" << endl;
 
@@ -202,7 +220,7 @@ void Student ::college_menu()
     {
         cout << "******-Student College Menu-******" << endl;
         cout << "1. Add Complaint" << endl;
-        cout << "2. View My Complaint" << endl;
+        cout << "2. View Currently Raised Complaint" << endl;
         cout << "3. Back" << endl;
         cout << "Enter Your Choice : ";
         cin >> choice;
@@ -388,3 +406,4 @@ int main()
     }
     return 0;
 }
+
